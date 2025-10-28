@@ -1,0 +1,12 @@
+FROM ubuntu:24.04
+
+RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates curl nvtop \
+ && rm -rf /var/lib/apt/lists/*
+
+RUN update-ca-certificates
+
+RUN curl -L -o ttyd.x86_64 \
+  https://github.com/tsl0922/ttyd/releases/download/1.7.7/ttyd.x86_64 && chmod +x ttyd.x86_64 && mv ttyd.x86_64 /usr/local/bin/ttyd
+
+EXPOSE 8082
+ENTRYPOINT ["ttyd", "-p", "8082", "nvtop"]

@@ -1,0 +1,19 @@
+comfyui.akcc.dev, comfyui.akamai.tech {
+  encode zstd gzip
+
+  # GPU monitor path - must come before the catch-all
+  handle_path /monitor* {
+    reverse_proxy gpu-monitor:8082
+  }
+
+  # ComfyUI main application - catch-all for everything else
+  handle {
+    reverse_proxy comfyui:8188 {
+      transport http {
+         read_timeout 600s
+         write_timeout 600s
+         dial_timeout 10s
+      }
+    }
+  }
+}

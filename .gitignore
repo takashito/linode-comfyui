@@ -1,0 +1,51 @@
+# ComfyUI data directories
+models/
+input/
+output/
+custom_nodes/
+user/
+
+# Caddy data
+caddy_data/
+caddy_config/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+
+# Docker
+.dockerignore
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Logs
+*.log
+logs/
+
+# Environment and secrets
+.env
+.env.local
+*.pem
+*.key
+*.crt
+
+# Temporary files
+*.tmp
+*.bak
+*.cache
+
+# System files
+Thumbs.db
+desktop.ini

@@ -1,0 +1,60 @@
+services:
+  comfyui:
+    build:
+      context: .
+      dockerfile: Dockerfile.comfyui
+    image: local/comfyui:cuda124
+    container_name: comfyui
+    restart: unless-stopped
+    ports:
+      - "8188:8188"
+    environment:
+      NVIDIA_VISIBLE_DEVICES: "all"
+      NVIDIA_DRIVER_CAPABILITIES: "compute,utility"
+      TZ: "Asia/Tokyo"
+    runtime: nvidia
+    command: ["python3","main.py","--listen","0.0.0.0","--port","8188"]
+    volumes:
+      - ./user:/opt/ComfyUI/user
+      - ./models:/opt/ComfyUI/models
+      - ./input:/opt/ComfyUI/input
+      - ./output:/opt/ComfyUI/output
+      - ./custom_nodes:/opt/ComfyUI/custom_nodes
+
+  caddy:
+    image: caddy:2
+    container_name: caddy
+    restart: unless-stopped
+    depends_on:
+      - comfyui
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+
+  gpu-monitor:
+    build: 
+      context: .
+      dockerfile: Dockerfile.gpu-monitor
+    image: gpu-monitor:latest
+    container_name: gpu-monitor
+    pid: host
+    ports:
+      - "8082:8082"
+    environment:
+      - TZ=Asia/Tokyo
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    restart: unless-stopped
+
+volumes:
+  caddy_data:
+  caddy_config:
