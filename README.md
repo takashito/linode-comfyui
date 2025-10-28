@@ -68,8 +68,8 @@ This instance provides good performance and cost balance for ComfyUI workflows. 
 
 ```bash
 # Clone to any directory you prefer
-git clone <repository-url> comfyui-deployment
-cd comfyui-deployment
+git clone https://github.com/takashito/linode-comfyui.git
+cd linode-comfyui
 ```
 
 Or download and extract the files to your preferred location.
