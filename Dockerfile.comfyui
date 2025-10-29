@@ -41,13 +41,13 @@ RUN uv pip install -r requirements.txt
 # May fail depending on PyTorch version compatibility. Enable if needed.
 # RUN uv pip install xformers --index-url https://download.pytorch.org/whl/cu124
 
+# Install ComfyUI-Manager BEFORE defining volumes
+WORKDIR ${COMFYUI_HOME}/custom_nodes
+RUN git clone https://github.com/ltdrdata/ComfyUI-Manager.git
+
 # Expose port and define persistent volumes
 EXPOSE 8188
 VOLUME ["/opt/ComfyUI/models", "/opt/ComfyUI/input", "/opt/ComfyUI/output", "/opt/ComfyUI/custom_nodes"]
-
-# Install Comfyui Manager
-WORKDIR ${COMFYUI_HOME}/custom_nodes
-RUN git clone https://github.com/ltdrdata/ComfyUI-Manager.git
 
 # Create health check script
 RUN printf '#!/bin/sh\ncurl -fsS http://127.0.0.1:8188/ >/dev/null || exit 1\n' > /usr/local/bin/healthcheck.sh && \
