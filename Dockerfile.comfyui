@@ -46,7 +46,7 @@ EXPOSE 8188
 VOLUME ["/opt/ComfyUI/models", "/opt/ComfyUI/input", "/opt/ComfyUI/output", "/opt/ComfyUI/custom_nodes"]
 
 # Install Comfyui Manager
-WORKDIR /opt/ComfyUI/custom_nodes
+WORKDIR ${COMFYUI_HOME}/custom_nodes
 RUN git clone https://github.com/ltdrdata/ComfyUI-Manager.git
 
 # Create health check script
@@ -54,5 +54,6 @@ RUN printf '#!/bin/sh\ncurl -fsS http://127.0.0.1:8188/ >/dev/null || exit 1\n' 
     chmod +x /usr/local/bin/healthcheck.sh
 
 # Use tini as init system for proper signal handling
+WORKDIR ${COMFYUI_HOME}
 ENTRYPOINT ["/usr/bin/tini", "--"]
 CMD ["python3", "main.py", "--listen", "0.0.0.0", "--port", "8188"]
