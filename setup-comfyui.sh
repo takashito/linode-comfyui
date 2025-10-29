@@ -88,6 +88,15 @@ cd "$SCRIPT_DIR"
 mkdir -p models/{diffusion_models,vae,text_encoders}
 mkdir -p input output custom_nodes user
 
+# Install ComfyUI-Manager
+echo "Installing ComfyUI-Manager..."
+if [ ! -d "custom_nodes/ComfyUI-Manager" ]; then
+    git clone https://github.com/ltdrdata/ComfyUI-Manager.git custom_nodes/ComfyUI-Manager
+    echo "ComfyUI-Manager installed successfully!"
+else
+    echo "ComfyUI-Manager already exists, skipping..."
+fi
+
 # build docker files & start compose
 echo "Building and starting services..."
 docker compose build --no-cache
