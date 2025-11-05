@@ -97,6 +97,15 @@ else
     echo "ComfyUI-Manager already exists, skipping..."
 fi
 
+# Install ComfyUI-MultiGPU Plugin
+echo "Installing ComfyUI-MultiGPU Plugin..."
+if [ ! -d "custom_nodes/ComfyUI-MultiGPU" ]; then
+    git clone https://github.com/pollockjj/ComfyUI-MultiGPU.git custom_nodes/ComfyUI-MultiGPU
+    echo "ComfyUI-MultiGPU Plugin installed successfully!"
+else
+    echo "ComfyUI-MultiGPU Plugin already exists, skipping..."
+fi
+
 # build docker files & start compose
 echo "Building and starting services..."
 docker compose build --no-cache
